@@ -1,0 +1,60 @@
+{
+	"rankings": [
+		{
+			"name": "Cigarette Lighter",
+			"ranking": 1
+		},
+		{
+			"name": "Steel Wool",
+			"ranking": 2
+		},
+		{
+			"name": "Shirt and Pants",
+			"ranking": 3
+		},
+		{
+			"name": "Chocolate Bar",
+			"ranking": 4
+		},
+		{
+			"name": "Can of Shortening",
+			"ranking": 5
+		},
+		{
+			"name": "Flashlight with batteries",
+			"ranking": 6
+		},
+		{
+			"name": "Rope",
+			"ranking": 7
+		},
+		{
+			"name": "Newspaper",
+			"ranking": 8
+		},
+		{
+			"name": "Pistol",
+			"ranking": 9
+		},
+		{
+			"name": "Knife",
+			"ranking": 10
+		},
+		{
+			"name": "Compress kit",
+			"ranking": 11
+		},
+		{
+			"name": "Ski Poles",
+			"ranking": 12
+		},
+		{
+			"name": "Whiskey",
+			"ranking": 13
+		},
+		{
+			"name": "Air Map",
+			"ranking": 14
+		}
+	]
+}
