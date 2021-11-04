@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class AgentController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
+    private ItemRanking[] itemRankings = null;
+    
     void Start()
     {
         

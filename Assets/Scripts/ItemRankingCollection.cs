@@ -1,5 +1,7 @@
+using System.Collections.Generic;
+
 [System.Serializable]
 public class ItemRankingCollection
 {
-    public ItemRanking[] rankings;
+    public List<ItemRanking> rankings;
 }
