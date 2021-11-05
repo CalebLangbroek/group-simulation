@@ -26,7 +26,8 @@ public class GroupModel
         get => _agentItemRankings;
         private set
         {
-            if(value.Count != AgentCount) {
+            if (value.Count != AgentCount)
+            {
                 throw new System.Exception();
             }
 

@@ -167,6 +167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rows: 3
+  _floorSize: 10
+  _spacingSize: 5
   _groupCount: 10
   _agentCount: 3
   _groupPrefab: {fileID: 2545287995377318883, guid: 263e1e25c3f9bc147b0935013d0aad4c, type: 3}
