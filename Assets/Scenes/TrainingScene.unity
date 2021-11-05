@@ -166,9 +166,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933be5f81f48bc448b2b2070e0fcb4ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 3
-  groupCount: 9
-  groupPrefab: {fileID: 2545287995377318883, guid: 263e1e25c3f9bc147b0935013d0aad4c, type: 3}
+  _rows: 3
+  _groupCount: 10
+  _agentCount: 3
+  _groupPrefab: {fileID: 2545287995377318883, guid: 263e1e25c3f9bc147b0935013d0aad4c, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

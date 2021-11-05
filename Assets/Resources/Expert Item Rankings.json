@@ -1,64 +1,64 @@
 {
-	"rankings": [
+	"Rankings": [
 		{
-			"name": "Oxygen",
-			"ranking": 1
+			"Name": "Oxygen",
+			"Ranking": 1
 		},
 		{
-			"name": "Water",
-			"ranking": 2
+			"Name": "Water",
+			"Ranking": 2
 		},
 		{
-			"name": "Map",
-			"ranking": 3
+			"Name": "Map",
+			"Ranking": 3
 		},
 		{
-			"name": "Food",
-			"ranking": 4
+			"Name": "Food",
+			"Ranking": 4
 		},
 		{
-			"name": "FM",
-			"ranking": 5
+			"Name": "FM",
+			"Ranking": 5
 		},
 		{
-			"name": "Rope",
-			"ranking": 6
+			"Name": "Rope",
+			"Ranking": 6
 		},
 		{
-			"name": "FirstAid",
-			"ranking": 7
+			"Name": "FirstAid",
+			"Ranking": 7
 		},
 		{
-			"name": "Parachute",
-			"ranking": 8
+			"Name": "Parachute",
+			"Ranking": 8
 		},
 		{
-			"name": "Raft",
-			"ranking": 9
+			"Name": "Raft",
+			"Ranking": 9
 		},
 		{
-			"name": "Flares",
-			"ranking": 10
+			"Name": "Flares",
+			"Ranking": 10
 		},
 		{
-			"name": "Pistols",
-			"ranking": 11
+			"Name": "Pistols",
+			"Ranking": 11
 		},
 		{
-			"name": "Milk",
-			"ranking": 12
+			"Name": "Milk",
+			"Ranking": 12
 		},
 		{
-			"name": "Heating",
-			"ranking": 13
+			"Name": "Heating",
+			"Ranking": 13
 		},
 		{
-			"name": "Compass",
-			"ranking": 14
+			"Name": "Compass",
+			"Ranking": 14
 		},
 		{
-			"name": "Matches",
-			"ranking": 15
+			"Name": "Matches",
+			"Ranking": 15
 		}
 	]
 }

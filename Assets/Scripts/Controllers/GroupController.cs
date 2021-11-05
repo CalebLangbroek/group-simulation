@@ -6,22 +6,22 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
 {
 
     [SerializeField]
-    private GameObject agentPrefab;
+    private GameObject _agentPrefab;
 
-    private int agentCount = 0;
+    private int _agentCount = 0;
 
     public void Initialize(GroupModel data)
     {
-        this.agentCount = data.AgentCount;
-        
+        _agentCount = data.AgentCount;
+
 
     }
 
     void Start()
     {
-        for (int j = 0; j < agentCount; j++)
+        for (int j = 0; j < _agentCount; j++)
         {
-            GameObject agentInstance = Instantiate(agentPrefab, Vector3.zero, new Quaternion());
+            GameObject agentInstance = Instantiate(_agentPrefab, Vector3.zero, new Quaternion());
             agentInstance.transform.parent = this.transform;
             agentInstance.transform.localPosition = new Vector3(j % 3 * 2, 0.6f, Mathf.Floor(j / 3) * 2);
 

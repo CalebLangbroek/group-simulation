@@ -4,9 +4,9 @@ public class GroupModel
 {
     private int _agentCount = 0;
 
-    private List<List<ItemRanking>> _agentItemRankings = null;
+    private List<IndividualItemRanking> _agentItemRankings = null;
 
-    public GroupModel(int agentCount, List<List<ItemRanking>> agentItemRankings)
+    public GroupModel(int agentCount, List<IndividualItemRanking> agentItemRankings)
     {
         AgentCount = agentCount;
         AgentItemRankings = agentItemRankings;
@@ -21,7 +21,7 @@ public class GroupModel
         }
     }
 
-    public List<List<ItemRanking>> AgentItemRankings
+    public List<IndividualItemRanking> AgentItemRankings
     {
         get => _agentItemRankings;
         private set

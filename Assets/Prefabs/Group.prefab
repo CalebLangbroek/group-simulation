@@ -44,8 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94a8c521b2c41b24f8f0f422d740ae64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agentCount: 3
-  agentPrefab: {fileID: 2527615134330905411, guid: 5e9eae3579419d641a6206cf68a6e4ee, type: 3}
+  _agentPrefab: {fileID: 2527615134330905411, guid: 5e9eae3579419d641a6206cf68a6e4ee, type: 3}
 --- !u!1 &2545287995448349466
 GameObject:
   m_ObjectHideFlags: 0

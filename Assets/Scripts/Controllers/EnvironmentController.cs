@@ -6,32 +6,34 @@ public class EnvironmentController : MonoBehaviour
 {
 
     [SerializeField]
-    private int rows = 3;
+    private int _rows = 3;
 
     [SerializeField]
-    private int groupCount = 10;
+    private int _groupCount = 10;
 
     [SerializeField]
-    private int agentCount = 3;
+    private int _agentCount = 3;
 
     [SerializeField]
-    private GameObject groupPrefab;
+    private GameObject _groupPrefab;
 
-    private List<ItemRanking> expertItemRankings = null;
+    private List<ItemRanking> _expertItemRankings = null;
 
     void Awake()
     {
-        // read item rankings from file
-        TextAsset json = Resources.Load<TextAsset>("Item Rankings");
-        ItemRankingCollection itemRankingCollection = JsonUtility.FromJson<ItemRankingCollection>(json.text);
+        // read expert item rankings from file
+        TextAsset json = Resources.Load<TextAsset>("Expert Item Rankings");
+        this._expertItemRankings = JsonUtility.FromJson<ItemRankingCollection>(json.text).Rankings;
 
-        this.expertItemRankings = itemRankingCollection.rankings;
+        // read individuals' item rankings from file
+        json = Resources.Load<TextAsset>("Individuals Item Rankings");
+        List<IndividualItemRanking> individualItemRankings = JsonUtility.FromJson<IndividualItemRankingCollection>(json.text).IndividualRankings;
 
         // initialize agents
-        for(int i = 0; i < groupCount; i++) {
-            Vector3 floorLocation = new Vector3(i % this.rows * 15, 0, Mathf.Floor(i / this.rows) * 15);
-            GameObject groupInstance = Instantiate(this.groupPrefab, floorLocation, new Quaternion());
-            GroupModel groupModel = new GroupModel(0, new List<List<ItemRanking>>());
+        for(int i = 0; i < _groupCount; i++) {
+            Vector3 floorLocation = new Vector3(i % _rows * 15, 0, Mathf.Floor(i / _rows) * 15);
+            GameObject groupInstance = Instantiate(_groupPrefab, floorLocation, new Quaternion());
+            GroupModel groupModel = new GroupModel(_agentCount, individualItemRankings.GetRange(i * _groupCount, _agentCount));
             groupInstance.GetComponent<GroupController>().Initialize(groupModel);
         }
     }
