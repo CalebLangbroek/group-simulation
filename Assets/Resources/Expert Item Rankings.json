@@ -1,60 +1,64 @@
 {
 	"rankings": [
 		{
-			"name": "Cigarette Lighter",
+			"name": "Oxygen",
 			"ranking": 1
 		},
 		{
-			"name": "Steel Wool",
+			"name": "Water",
 			"ranking": 2
 		},
 		{
-			"name": "Shirt and Pants",
+			"name": "Map",
 			"ranking": 3
 		},
 		{
-			"name": "Chocolate Bar",
+			"name": "Food",
 			"ranking": 4
 		},
 		{
-			"name": "Can of Shortening",
+			"name": "FM",
 			"ranking": 5
 		},
 		{
-			"name": "Flashlight with batteries",
+			"name": "Rope",
 			"ranking": 6
 		},
 		{
-			"name": "Rope",
+			"name": "FirstAid",
 			"ranking": 7
 		},
 		{
-			"name": "Newspaper",
+			"name": "Parachute",
 			"ranking": 8
 		},
 		{
-			"name": "Pistol",
+			"name": "Raft",
 			"ranking": 9
 		},
 		{
-			"name": "Knife",
+			"name": "Flares",
 			"ranking": 10
 		},
 		{
-			"name": "Compress kit",
+			"name": "Pistols",
 			"ranking": 11
 		},
 		{
-			"name": "Ski Poles",
+			"name": "Milk",
 			"ranking": 12
 		},
 		{
-			"name": "Whiskey",
+			"name": "Heating",
 			"ranking": 13
 		},
 		{
-			"name": "Air Map",
+			"name": "Compass",
 			"ranking": 14
+		},
+		{
+			"name": "Matches",
+			"ranking": 15
 		}
 	]
 }
