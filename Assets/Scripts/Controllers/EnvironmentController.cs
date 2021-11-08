@@ -32,7 +32,7 @@ public class EnvironmentController : MonoBehaviour
     {
         // read expert item rankings from file
         TextAsset json = Resources.Load<TextAsset>("Expert Item Rankings");
-        this._expertItemRankings = JsonUtility.FromJson<ItemRankingCollection>(json.text).Rankings;
+        _expertItemRankings = JsonUtility.FromJson<ItemRankingCollection>(json.text).Rankings;
 
         // read individuals' item rankings from file
         json = Resources.Load<TextAsset>("Individuals Item Rankings");
@@ -43,7 +43,7 @@ public class EnvironmentController : MonoBehaviour
         {
             Vector3 floorLocation = new Vector3(i % _rows * (_floorSize + _spacingSize), 0, Mathf.Floor(i / _rows) * (_floorSize + _spacingSize));
             GameObject groupInstance = Instantiate(_groupPrefab, floorLocation, new Quaternion());
-            GroupModel groupModel = new GroupModel(_agentCount, individualItemRankings.GetRange(i * _agentCount, _agentCount));
+            GroupModel groupModel = new GroupModel(i, _agentCount, individualItemRankings.GetRange(i * _agentCount, _agentCount));
             groupInstance.GetComponent<GroupController>().Initialize(groupModel);
         }
     }

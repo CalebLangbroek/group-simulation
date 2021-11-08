@@ -1,16 +1,32 @@
+using System;
 using System.Collections.Generic;
 
 public class AgentModel
 {
-    private int _teamID;
+    private int _groupID;
     private int _agentID;
-    private int _groupSize;
     private List<ItemRanking> _itemRankings;
+    private Action<int, ItemRanking> _onProposeAction;
+    private Action<int, int> _onAcceptAction;
+    private Action<int, int> _onRejectAction;
 
-    public AgentModel(int agentID, List<ItemRanking> itemRankings)
+    public AgentModel(int groupID, int agentID, List<ItemRanking> itemRankings, Action<int, ItemRanking> onProposeAction, Action<int, int> onAcceptAction, Action<int, int> onRejectAction)
     {
+        GroupID = groupID;
         AgentID = agentID;
         ItemRankings = itemRankings;
+        OnProposeAction = onProposeAction;
+        OnAcceptAction = onAcceptAction;
+        OnRejectAction = onRejectAction;
+    }
+
+    public int GroupID
+    {
+        get => _groupID;
+        private set
+        {
+            _groupID = value;
+        }
     }
 
     public int AgentID
@@ -31,4 +47,30 @@ public class AgentModel
         }
     }
 
+    public Action<int, ItemRanking> OnProposeAction
+    {
+        get => _onProposeAction;
+        private set
+        {
+            _onProposeAction = value;
+        }
+    }
+
+    public Action<int, int> OnAcceptAction
+    {
+        get => _onAcceptAction;
+        private set
+        {
+            _onAcceptAction = value;
+        }
+    }
+
+    public Action<int, int> OnRejectAction
+    {
+        get => _onRejectAction;
+        private set
+        {
+            _onRejectAction = value;
+        }
+    }
 }
