@@ -69,3 +69,9 @@ crashlytics-build.properties
 
 # Python Virtual Environment
 python-envs/
+
+# ML Agents Output
+ML-Agents/
+ML-Agents.meta
+results/
+results.meta

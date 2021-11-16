@@ -8,6 +8,9 @@ using UnityEngine;
 
 public class AgentController : Agent, IInitializable<AgentModel>
 {
+    [SerializeField]
+    private List<Material> _materials;
+
     private int _agentID;
     private List<ItemRanking> _itemRankings;
     private Action<int, ItemRanking> _onProposeAction;
@@ -34,10 +37,9 @@ public class AgentController : Agent, IInitializable<AgentModel>
 
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnEpisodeBegin()
     {
-
+        transform.localPosition = new Vector3(_agentID, transform.localPosition.y, _agentID);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -47,9 +49,13 @@ public class AgentController : Agent, IInitializable<AgentModel>
 
         switch (action)
         {
+            case 0:
+                {
+                    break;
+                }
             case 1:
                 {
-                    _onProposeAction.Invoke(_agentID, _itemRankings[itemID - 1]);
+                    _onProposeAction.Invoke(_agentID, _itemRankings[itemID]);
                     break;
                 }
             case 2:
@@ -64,14 +70,16 @@ public class AgentController : Agent, IInitializable<AgentModel>
                 }
             default:
                 {
-                    Debug.LogError("Invalid Agent Action");
+                    Debug.LogError("Invalid Agent Action: " + action);
                     break;
                 }
         }
+
+        GetComponent<MeshRenderer>().material = _materials[action];
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-
+        sensor.AddObservation(1.0f);
     }
 }
