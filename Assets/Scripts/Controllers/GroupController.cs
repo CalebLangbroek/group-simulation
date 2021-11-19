@@ -9,12 +9,9 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
     [SerializeField]
     private GameObject _agentPrefab;
 
-    [SerializeField]
-    private int _maxSteps = 2500;
+    private int _maxSteps = 0;
 
     private int _stepTimer = 0;
-
-    private int _agentCount = 0;
 
     private SimpleMultiAgentGroup _agentGroup;
 
@@ -26,26 +23,20 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
 
     public void Initialize(GroupModel data)
     {
-        _agentCount = data.AgentCount;
-
+        _maxSteps = GroupSimulationSettings.Instance.MaxSimulationSteps;
         _agentGroup = new SimpleMultiAgentGroup();
         _agents = new List<Agent>();
 
-        for (int i = 0; i < _agentCount; i++)
+        for (int i = 0; i < data.AgentItemRankings.Count; i++)
         {
             GameObject agentInstance = Instantiate(_agentPrefab, Vector3.zero, new Quaternion());
             agentInstance.transform.parent = this.transform;
-            agentInstance.transform.localPosition = new Vector3(i % 3 * 2, 0.6f, Mathf.Floor(i / 3) * 2);
+            agentInstance.transform.localPosition = new Vector3(0, 0.6f, 0);
             AgentController agentController = agentInstance.GetComponent<AgentController>();
-            agentController.Initialize(new AgentModel(data.GroupID, i, data.AgentItemRankings[i].Rankings, OnAgentPropose, OnAgentAccept, OnAgentReject));
+            agentController.Initialize(new AgentModel(data.GroupID, data.AgentItemRankings[i].ParticipantID, data.AgentItemRankings[i].Rankings, OnAgentPropose, OnAgentAccept, OnAgentReject));
             _agentGroup.RegisterAgent(agentController);
             _agents.Add(agentController);
         }
-    }
-
-    void Start()
-    {
-
     }
 
     // Update is called once per frame
@@ -72,6 +63,11 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
         }
     }
 
+    private void OnAgentObserve()
+    {
+
+    }
+
     private void OnAgentPropose(int agentID, ItemRanking itemRanking)
     {
         // reward agent for proposing
@@ -83,18 +79,19 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
 
     private void OnAgentAccept(int agentID, int itemID)
     {
-        // reward agent for accepting
-        _agents[agentID].AddReward(1.0f);
-
-        // reward the whole group based 
-        _agentGroup.AddGroupReward(10.0f);
-
         // move item from proposed to accepted
         if (_proposedItems.Count != 0)
         {
             _acceptedItems.Add(_proposedItems[_proposedItems.Count - 1]);
             _proposedItems.RemoveAt(_proposedItems.Count - 1);
         }
+
+        // reward agent for accepting
+        _agents[agentID].AddReward(1.0f);
+
+        // reward the whole group based 
+        ItemRanking expertRanking = GroupSimulationSettings.Instance.ExpertItemRankings.Find(x => x.Name.Equals(_acceptedItems[_acceptedItems.Count - 1].Name));
+        _agentGroup.AddGroupReward(Mathf.Abs(expertRanking.Ranking));
 
         // end training if all items are ranked
         if (_acceptedItems.Count == 15)

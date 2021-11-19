@@ -15,48 +15,26 @@ public class EnvironmentController : MonoBehaviour
     [SerializeField]
     private int _spacingSize = 5;
 
-    [Header("Group Settings")]
-    [SerializeField]
-    private int _groupCount = 10;
-
-    [SerializeField]
-    private int _agentCount = 3;
-
     [Header("Prefabs")]
     [SerializeField]
     private GameObject _groupPrefab;
 
-    private List<ItemRanking> _expertItemRankings = null;
-
     void Awake()
     {
-        // read expert item rankings from file
-        TextAsset json = Resources.Load<TextAsset>("Expert Item Rankings");
-        _expertItemRankings = JsonUtility.FromJson<ItemRankingCollection>(json.text).Rankings;
-
         // read individuals' item rankings from file
-        json = Resources.Load<TextAsset>("Individuals Item Rankings");
+        TextAsset json = Resources.Load<TextAsset>(GroupSimulationSettings.Instance.IndividualItemRankingsFileName);
         List<IndividualItemRanking> individualItemRankings = JsonUtility.FromJson<IndividualItemRankingCollection>(json.text).IndividualRankings;
+        individualItemRankings.Sort((a, b) => a.TeamID - b.TeamID);
 
         // initialize agents
-        for (int i = 0; i < _groupCount; i++)
+        int agentIndex = 0;
+        for (int i = 0; i < GroupSimulationSettings.Instance.GroupCount; i++)
         {
             Vector3 floorLocation = new Vector3(i % _rows * (_floorSize + _spacingSize), 0, Mathf.Floor(i / _rows) * (_floorSize + _spacingSize));
             GameObject groupInstance = Instantiate(_groupPrefab, floorLocation, new Quaternion());
-            GroupModel groupModel = new GroupModel(i, _agentCount, individualItemRankings.GetRange(i * _agentCount, _agentCount));
+            GroupModel groupModel = new GroupModel(individualItemRankings[agentIndex].TeamID, individualItemRankings.GetRange(agentIndex, individualItemRankings[agentIndex].GroupSize));
             groupInstance.GetComponent<GroupController>().Initialize(groupModel);
+            agentIndex += individualItemRankings[agentIndex].GroupSize;
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

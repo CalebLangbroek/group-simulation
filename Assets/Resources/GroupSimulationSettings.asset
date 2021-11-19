@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7af34f2347274d04093e78b61070c287, type: 3}
+  m_Name: GroupSimulationSettings
+  m_EditorClassIdentifier: 
+  AgentPrefab: {fileID: 2527615134330905411, guid: 5e9eae3579419d641a6206cf68a6e4ee, type: 3}
