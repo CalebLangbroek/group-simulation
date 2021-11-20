@@ -7,10 +7,10 @@ public class AgentModel
     private int _agentID;
     private List<ItemRanking> _itemRankings;
     private Action<int, ItemRanking> _onProposeAction;
-    private Action<int, int> _onAcceptAction;
-    private Action<int, int> _onRejectAction;
+    private Action<int, ItemRanking> _onAcceptAction;
+    private Action<int, ItemRanking> _onRejectAction;
 
-    public AgentModel(int groupID, int agentID, List<ItemRanking> itemRankings, Action<int, ItemRanking> onProposeAction, Action<int, int> onAcceptAction, Action<int, int> onRejectAction)
+    public AgentModel(int groupID, int agentID, List<ItemRanking> itemRankings, Action<int, ItemRanking> onProposeAction, Action<int, ItemRanking> onAcceptAction, Action<int, ItemRanking> onRejectAction)
     {
         GroupID = groupID;
         AgentID = agentID;
@@ -56,7 +56,7 @@ public class AgentModel
         }
     }
 
-    public Action<int, int> OnAcceptAction
+    public Action<int, ItemRanking> OnAcceptAction
     {
         get => _onAcceptAction;
         private set
@@ -65,7 +65,7 @@ public class AgentModel
         }
     }
 
-    public Action<int, int> OnRejectAction
+    public Action<int, ItemRanking> OnRejectAction
     {
         get => _onRejectAction;
         private set

@@ -15,17 +15,16 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
 
     private SimpleMultiAgentGroup _agentGroup;
 
-    private List<Agent> _agents;
+    private Dictionary<int, Agent> _agents = new Dictionary<int, Agent>();
 
-    private List<ItemRanking> _proposedItems = new List<ItemRanking>();
+    private Dictionary<string, int> _proposedItems = new Dictionary<string, int>();
 
-    private List<ItemRanking> _acceptedItems = new List<ItemRanking>();
+    private Dictionary<string, int> _acceptedItems = new Dictionary<string, int>();
 
     public void Initialize(GroupModel data)
     {
         _maxSteps = GroupSimulationSettings.Instance.MaxSimulationSteps;
         _agentGroup = new SimpleMultiAgentGroup();
-        _agents = new List<Agent>();
 
         for (int i = 0; i < data.AgentItemRankings.Count; i++)
         {
@@ -35,7 +34,7 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
             AgentController agentController = agentInstance.GetComponent<AgentController>();
             agentController.Initialize(new AgentModel(data.GroupID, data.AgentItemRankings[i].ParticipantID, data.AgentItemRankings[i].Rankings, OnAgentPropose, OnAgentAccept, OnAgentReject));
             _agentGroup.RegisterAgent(agentController);
-            _agents.Add(agentController);
+            _agents.Add(data.AgentItemRankings[i].ParticipantID, agentController);
         }
     }
 
@@ -54,12 +53,12 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
     private void ResetSimulation()
     {
         _stepTimer = 0;
-        _proposedItems = new List<ItemRanking>();
-        _acceptedItems = new List<ItemRanking>();
+        _proposedItems = new Dictionary<string, int>();
+        _acceptedItems = new Dictionary<string, int>();
 
-        foreach (var agentController in _agents)
+        foreach (var agent in _agents)
         {
-            _agentGroup.RegisterAgent(agentController);
+            _agentGroup.RegisterAgent(agent.Value);
         }
     }
 
@@ -70,40 +69,56 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
 
     private void OnAgentPropose(int agentID, ItemRanking itemRanking)
     {
+        if (_proposedItems.ContainsKey(itemRanking.Name) || _acceptedItems.ContainsKey(itemRanking.Name))
+        {
+            return;
+        }
+
         // reward agent for proposing
         _agents[agentID].AddReward(1.0f);
 
         // add to list of proposals
-        _proposedItems.Add(itemRanking);
+        _proposedItems.Add(itemRanking.Name, itemRanking.Ranking);
     }
 
-    private void OnAgentAccept(int agentID, int itemID)
+    private void OnAgentAccept(int agentID, ItemRanking itemRanking)
     {
-        // move item from proposed to accepted
-        if (_proposedItems.Count != 0)
+        // make sure the item ranking has been proposed and hasn't been accepted
+        if (!_proposedItems.ContainsKey(itemRanking.Name) || _acceptedItems.ContainsKey(itemRanking.Name))
         {
-            _acceptedItems.Add(_proposedItems[_proposedItems.Count - 1]);
-            _proposedItems.RemoveAt(_proposedItems.Count - 1);
+            return;
         }
 
         // reward agent for accepting
         _agents[agentID].AddReward(1.0f);
 
-        // reward the whole group based 
-        ItemRanking expertRanking = GroupSimulationSettings.Instance.ExpertItemRankings.Find(x => x.Name.Equals(_acceptedItems[_acceptedItems.Count - 1].Name));
-        _agentGroup.AddGroupReward(Mathf.Abs(expertRanking.Ranking));
+        // move item from proposed to accepted
+        _proposedItems.Remove(itemRanking.Name);
+        _acceptedItems.Add(itemRanking.Name, itemRanking.Ranking);
+
+        // reward the whole group based on how close the ranking was to the expert ranking
+        ItemRanking expertRanking = GroupSimulationSettings.Instance.ExpertItemRankings.Find(x => x.Name.Equals(itemRanking.Name));
+        _agentGroup.AddGroupReward(1 / (Mathf.Abs(expertRanking.Ranking - itemRanking.Ranking) + 1) * 10);
 
         // end training if all items are ranked
-        if (_acceptedItems.Count == 15)
+        if (_acceptedItems.Count == GroupSimulationSettings.Instance.ExpertItemRankings.Count)
         {
             _agentGroup.EndGroupEpisode();
             ResetSimulation();
         }
     }
 
-    private void OnAgentReject(int agentID, int itemID)
+    private void OnAgentReject(int agentID, ItemRanking itemRanking)
     {
+        // make sure the item ranking has been proposed and hasn't been accepted
+        if (!_proposedItems.ContainsKey(itemRanking.Name) || _acceptedItems.ContainsKey(itemRanking.Name))
+        {
+            return;
+        }
+
         // penalize agent for rejecting
         _agents[agentID].AddReward(-1.0f);
+
+        _proposedItems.Remove(itemRanking.Name);
     }
 }

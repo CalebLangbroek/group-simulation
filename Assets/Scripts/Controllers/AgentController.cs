@@ -14,8 +14,8 @@ public class AgentController : Agent, IInitializable<AgentModel>
     private int _agentID;
     private List<ItemRanking> _itemRankings;
     private Action<int, ItemRanking> _onProposeAction;
-    private Action<int, int> _onAcceptAction;
-    private Action<int, int> _onRejectAction;
+    private Action<int, ItemRanking> _onAcceptAction;
+    private Action<int, ItemRanking> _onRejectAction;
 
     public void Initialize(AgentModel data)
     {
@@ -60,12 +60,12 @@ public class AgentController : Agent, IInitializable<AgentModel>
                 }
             case 2:
                 {
-                    _onAcceptAction.Invoke(_agentID, itemID);
+                    _onAcceptAction.Invoke(_agentID, _itemRankings[itemID]);
                     break;
                 }
             case 3:
                 {
-                    _onRejectAction.Invoke(_agentID, itemID);
+                    _onRejectAction.Invoke(_agentID, _itemRankings[itemID]);
                     break;
                 }
             default:
