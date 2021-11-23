@@ -9,13 +9,15 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
     [SerializeField]
     private GameObject _agentPrefab;
 
+    private int _groupID = 0;
+
     private int _maxSteps = 0;
 
     private int _stepTimer = 0;
 
     private SimpleMultiAgentGroup _agentGroup;
 
-    private Dictionary<int, Agent> _agents = new Dictionary<int, Agent>();
+    private Dictionary<int, AgentController> _agents = new Dictionary<int, AgentController>();
 
     private Dictionary<string, int> _proposedItems = new Dictionary<string, int>();
 
@@ -25,6 +27,7 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
     {
         _maxSteps = GroupSimulationSettings.Instance.MaxSimulationSteps;
         _agentGroup = new SimpleMultiAgentGroup();
+        _groupID = data.GroupID;
 
         for (int i = 0; i < data.AgentItemRankings.Count; i++)
         {
@@ -36,6 +39,8 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
             _agentGroup.RegisterAgent(agentController);
             _agents.Add(data.AgentItemRankings[i].ParticipantID, agentController);
         }
+
+        ResetSimulation();
     }
 
     // Update is called once per frame
@@ -55,16 +60,12 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
         _stepTimer = 0;
         _proposedItems = new Dictionary<string, int>();
         _acceptedItems = new Dictionary<string, int>();
+        UpdateAgentsObservations();
 
         foreach (var agent in _agents)
         {
             _agentGroup.RegisterAgent(agent.Value);
         }
-    }
-
-    private void OnAgentObserve()
-    {
-
     }
 
     private void OnAgentPropose(int agentID, ItemRanking itemRanking)
@@ -79,6 +80,8 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
 
         // add to list of proposals
         _proposedItems.Add(itemRanking.Name, itemRanking.Ranking);
+
+        UpdateAgentsObservations();
     }
 
     private void OnAgentAccept(int agentID, ItemRanking itemRanking)
@@ -96,9 +99,12 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
         _proposedItems.Remove(itemRanking.Name);
         _acceptedItems.Add(itemRanking.Name, itemRanking.Ranking);
 
+        UpdateAgentsObservations();
+
         // reward the whole group based on how close the ranking was to the expert ranking
+        float itemCount = GroupSimulationSettings.Instance.ExpertItemRankings.Count;
         ItemRanking expertRanking = GroupSimulationSettings.Instance.ExpertItemRankings.Find(x => x.Name.Equals(itemRanking.Name));
-        _agentGroup.AddGroupReward(1 / (Mathf.Abs(expertRanking.Ranking - itemRanking.Ranking) + 1) * 10);
+        _agentGroup.AddGroupReward((itemCount - (float)Mathf.Abs(expertRanking.Ranking - itemRanking.Ranking)) / itemCount * (float)GroupSimulationSettings.Instance.MaxReward / itemCount);
 
         // end training if all items are ranked
         if (_acceptedItems.Count == GroupSimulationSettings.Instance.ExpertItemRankings.Count)
@@ -120,5 +126,32 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
         _agents[agentID].AddReward(-1.0f);
 
         _proposedItems.Remove(itemRanking.Name);
+
+        UpdateAgentsObservations();
+    }
+
+    private void UpdateAgentsObservations()
+    {
+        foreach (var agent in _agents)
+        {
+            agent.Value.UpdateObservations(ConvertItemDictToFloatList(_proposedItems), ConvertItemDictToFloatList(_acceptedItems));
+        }
+    }
+
+    private List<float> ConvertItemDictToFloatList(Dictionary<string, int> items)
+    {
+        List<float> itemsFloatList = new List<float>(GroupSimulationSettings.Instance.ExpertItemRankings.Count);
+        foreach (var expertRanking in GroupSimulationSettings.Instance.ExpertItemRankings)
+        {
+            if (items.ContainsKey(expertRanking.Name))
+            {
+                itemsFloatList.Add(1);
+            }
+            else
+            {
+                itemsFloatList.Add(0);
+            }
+        }
+        return itemsFloatList;
     }
 }

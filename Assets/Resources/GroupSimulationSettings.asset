@@ -12,4 +12,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7af34f2347274d04093e78b61070c287, type: 3}
   m_Name: GroupSimulationSettings
   m_EditorClassIdentifier: 
-  AgentPrefab: {fileID: 2527615134330905411, guid: 5e9eae3579419d641a6206cf68a6e4ee, type: 3}
+  IndividualItemRankingsFileName: Individuals Item Rankings
+  ExpertItemRankingsFileName: Expert Item Rankings
+  ExpertItemRankings:
+  - Name: Matches
+    Ranking: 15
+  - Name: Food
+    Ranking: 4
+  - Name: Rope
+    Ranking: 6
+  - Name: Parachute
+    Ranking: 8
+  - Name: Heating
+    Ranking: 13
+  - Name: Pistols
+    Ranking: 11
+  - Name: Milk
+    Ranking: 12
+  - Name: Oxygen
+    Ranking: 1
+  - Name: Map
+    Ranking: 3
+  - Name: Raft
+    Ranking: 9
+  - Name: Compass
+    Ranking: 14
+  - Name: Water
+    Ranking: 2
+  - Name: Flares
+    Ranking: 10
+  - Name: FirstAid
+    Ranking: 7
+  - Name: FM
+    Ranking: 5
+  GroupCount: 20
+  MaxSimulationSteps: 25000
+  MaxReward: 100

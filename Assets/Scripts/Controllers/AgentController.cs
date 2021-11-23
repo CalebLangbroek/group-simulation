@@ -12,7 +12,9 @@ public class AgentController : Agent, IInitializable<AgentModel>
     private List<Material> _materials;
 
     private int _agentID;
-    private List<ItemRanking> _itemRankings;
+    private List<ItemRanking> _itemRankings = new List<ItemRanking>();
+    private List<float> _proposedItems = new List<float>();
+    private List<float> _acceptedItems = new List<float>();
     private Action<int, ItemRanking> _onProposeAction;
     private Action<int, ItemRanking> _onAcceptAction;
     private Action<int, ItemRanking> _onRejectAction;
@@ -80,6 +82,13 @@ public class AgentController : Agent, IInitializable<AgentModel>
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(1.0f);
+        sensor.AddObservation(_proposedItems);
+        sensor.AddObservation(_acceptedItems);
+    }
+
+    public void UpdateObservations(List<float> proposedItems, List<float> acceptedItems)
+    {
+        _proposedItems = proposedItems;
+        _acceptedItems = acceptedItems;
     }
 }
