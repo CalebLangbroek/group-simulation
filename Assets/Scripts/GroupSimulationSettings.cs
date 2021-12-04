@@ -15,6 +15,9 @@ public class GroupSimulationSettings : SingletonScriptableObject<GroupSimulation
     [Header("Simulation Settings")]
     public int MaxSimulationSteps = 2500;
     public int MaxReward = 100;
+    public float AgentProposeAward = 10.0f;
+    public float AgentAcceptAward = 10.0f;
+    public float AgentRejectAward = -10.0f;
 
     // read expert item rankings from file
     public void ParseExpertItemRankings()

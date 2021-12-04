@@ -76,7 +76,7 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
         }
 
         // reward agent for proposing
-        _agents[agentID].AddReward(1.0f);
+        _agents[agentID].AddReward(GroupSimulationSettings.Instance.AgentProposeAward);
 
         // add to list of proposals
         _proposedItems.Add(itemRanking.Name, itemRanking.Ranking);
@@ -93,7 +93,7 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
         }
 
         // reward agent for accepting
-        _agents[agentID].AddReward(1.0f);
+        _agents[agentID].AddReward(GroupSimulationSettings.Instance.AgentAcceptAward);
 
         // move item from proposed to accepted
         _proposedItems.Remove(itemRanking.Name);
@@ -123,7 +123,7 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
         }
 
         // penalize agent for rejecting
-        _agents[agentID].AddReward(-1.0f);
+        _agents[agentID].AddReward(GroupSimulationSettings.Instance.AgentRejectAward);
 
         _proposedItems.Remove(itemRanking.Name);
 
