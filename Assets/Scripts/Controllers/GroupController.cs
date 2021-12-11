@@ -70,7 +70,8 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
 
     private void OnAgentPropose(int agentID, ItemRanking itemRanking)
     {
-        if (_proposedItems.ContainsKey(itemRanking.Name) || _acceptedItems.ContainsKey(itemRanking.Name))
+        // make sure we haven't already accepted or proposed this item or its ranking
+        if (IsItemAcceptedOrProposed(itemRanking))
         {
             return;
         }
@@ -87,7 +88,7 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
     private void OnAgentAccept(int agentID, ItemRanking itemRanking)
     {
         // make sure the item ranking has been proposed and hasn't been accepted
-        if (!_proposedItems.ContainsKey(itemRanking.Name) || _acceptedItems.ContainsKey(itemRanking.Name))
+        if (IsItemAcceptedOrNotProposed(itemRanking))
         {
             return;
         }
@@ -117,7 +118,7 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
     private void OnAgentReject(int agentID, ItemRanking itemRanking)
     {
         // make sure the item ranking has been proposed and hasn't been accepted
-        if (!_proposedItems.ContainsKey(itemRanking.Name) || _acceptedItems.ContainsKey(itemRanking.Name))
+        if (IsItemAcceptedOrNotProposed(itemRanking))
         {
             return;
         }
@@ -128,6 +129,16 @@ public class GroupController : MonoBehaviour, IInitializable<GroupModel>
         _proposedItems.Remove(itemRanking.Name);
 
         UpdateAgentsObservations();
+    }
+
+    private bool IsItemAcceptedOrProposed(ItemRanking itemRanking)
+    {
+        return _proposedItems.ContainsKey(itemRanking.Name) || _acceptedItems.ContainsKey(itemRanking.Name) || _proposedItems.ContainsValue(itemRanking.Ranking) || _acceptedItems.ContainsValue(itemRanking.Ranking);
+    }
+
+    private bool IsItemAcceptedOrNotProposed(ItemRanking itemRanking)
+    {
+        return !_proposedItems.ContainsKey(itemRanking.Name) || _acceptedItems.ContainsKey(itemRanking.Name);
     }
 
     private void UpdateAgentsObservations()

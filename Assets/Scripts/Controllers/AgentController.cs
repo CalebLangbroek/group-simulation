@@ -34,11 +34,6 @@ public class AgentController : Agent, IInitializable<AgentModel>
         behaviorParameters.TeamId = 0;
     }
 
-    void Start()
-    {
-
-    }
-
     public override void OnEpisodeBegin()
     {
         transform.localPosition = new Vector3(_agentID, transform.localPosition.y, _agentID);
@@ -48,6 +43,11 @@ public class AgentController : Agent, IInitializable<AgentModel>
     {
         int action = actions.DiscreteActions[0];
         int itemID = actions.DiscreteActions[1];
+        int ranking = actions.DiscreteActions[2];
+
+        ItemRanking itemRanking = new ItemRanking();
+        itemRanking.Name = _itemRankings[itemID].Name;
+        itemRanking.Ranking = ranking;
 
         switch (action)
         {
