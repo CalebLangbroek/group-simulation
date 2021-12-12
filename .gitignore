@@ -73,5 +73,3 @@ python-envs/
 # ML Agents Output
 ML-Agents/
 ML-Agents.meta
-results/
-results.meta
